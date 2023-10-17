@@ -1,5 +1,6 @@
 package com.vinutest.catodoapp
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -13,10 +14,18 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.vinutest.catodoapp.data.datasource.database.TodoDao
 import com.vinutest.catodoapp.domain.model.TodoItem
+import com.vinutest.catodoapp.presentation.di.NetworkModule
 import com.vinutest.catodoapp.presentation.ui.TodoViewModel
 import com.vinutest.catodoapp.ui.theme.CATodoAppTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+import kotlin.coroutines.coroutineContext
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -25,6 +34,9 @@ class MainActivity : ComponentActivity() {
         TodoViewModel.TodoViewModelFactory((application as MyApplication).repository)
     }
 
+    lateinit var todoDao: TodoDao
+
+    @SuppressLint("CoroutineCreationDuringComposition")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -35,7 +47,12 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Log.d("TAG", "onCreate: ")
+                    val response = NetworkModule.provideDemoApiService()
 
+                    GlobalScope.launch {
+                        val result = response.getTodos()
+                        Log.d("TAG", "onCreate: ${result.body()?.first()}")
+                    }
                 }
             }
         }

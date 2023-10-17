@@ -1,6 +1,8 @@
 package com.vinutest.catodoapp.presentation.di
 
 import com.vinutest.catodoapp.data.datasource.api.APICall
+import com.vinutest.catodoapp.data.datasource.database.TodoDao
+import com.vinutest.catodoapp.data.datasource.database.TodoDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,6 +19,11 @@ const val BASE_URL = "https://jsonplaceholder.typicode.com/"
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
+    @Provides
+    @Singleton
+    fun provideTodoDao(todoDatabase: TodoDatabase): TodoDao {
+        return todoDatabase.todoDao()
+    }
     @Singleton
     @Provides
     fun provideHttpClient() : OkHttpClient {
