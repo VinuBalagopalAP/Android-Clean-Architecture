@@ -7,25 +7,17 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.vinutest.catodoapp.data.datasource.database.TodoDao
-import com.vinutest.catodoapp.domain.model.TodoItem
 import com.vinutest.catodoapp.presentation.di.NetworkModule
 import com.vinutest.catodoapp.presentation.ui.TodoViewModel
 import com.vinutest.catodoapp.ui.theme.CATodoAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import javax.inject.Inject
-import kotlin.coroutines.coroutineContext
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -45,11 +37,23 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Log.d("TAG", "onCreate: ")
-                    val response = NetworkModule.provideDemoApiService()
+                    val retrofitResponse = NetworkModule.provideAPICallService()
 
-                    GlobalScope.launch {
-                        val result = response.getTodos()
+                    GlobalScope.launch(Dispatchers.IO) {
+                        val result = retrofitResponse.getTodos()
                         Log.d("TAG", "onCreate: ${result.body()?.first()}")
+
+
+                        val todoItems = result.body()!!
+
+                        var inserted = 1
+                        for (todoItem in todoItems) {
+                            if (inserted < 5) {
+                                todoItem.id = todoItem.id?.plus(1)
+                                todoViewModel.insert(todoItem)
+//                                inserted+=1
+                            }
+                        }
                     }
                 }
             }
@@ -57,12 +61,12 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun TodoList(todos: List<TodoItem>) {
-    LazyColumn {
-        items(todos) { todoItem ->
-            Log.d("Item Name", "TodoList: ${todoItem.title}")
-            Text("${todoItem.title}")
-        }
-    }
-}
+//@Composable
+//fun TodoList(todos: List<TodoItem>) {
+//    LazyColumn {
+//        items(todos) { todoItem ->
+//            Log.d("Item Name", "TodoList: ${todoItem.title}")
+//            Text("${todoItem.title}")
+//        }
+//    }
+//}

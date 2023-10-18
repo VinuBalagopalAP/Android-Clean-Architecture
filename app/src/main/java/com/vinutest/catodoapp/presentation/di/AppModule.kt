@@ -71,8 +71,10 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideDemoApiService(): APICall {
-        return Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create())
-            .build().create(APICall::class.java)
+    fun provideAPICallService(): APICall {
+        return Retrofit.Builder().baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+                .create(APICall::class.java)
     }
 }
