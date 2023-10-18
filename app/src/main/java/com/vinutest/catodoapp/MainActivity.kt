@@ -41,17 +41,17 @@ class MainActivity : ComponentActivity() {
 
                     GlobalScope.launch(Dispatchers.IO) {
                         val result = retrofitResponse.getTodos()
-                        Log.d("TAG", "onCreate: ${result.body()?.first()}")
+//                        Log.d("TAG", "onCreate: ${result.body()?.first()}")
 
 
                         val todoItems = result.body()!!
 
                         var inserted = 1
                         for (todoItem in todoItems) {
-                            if (inserted < 5) {
+                            if (inserted <= 5) {
                                 todoItem.id = todoItem.id?.plus(1)
                                 todoViewModel.insert(todoItem)
-//                                inserted+=1
+                                inserted+=1
                             }
                         }
                     }
