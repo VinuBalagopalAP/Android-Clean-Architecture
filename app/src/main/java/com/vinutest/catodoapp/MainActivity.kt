@@ -47,11 +47,11 @@ class MainActivity : ComponentActivity() {
                         val todoItems = result.body()!!
 
                         var inserted = 1
-                        for (todoItem in todoItems) {
+
+                        todoItems.forEach { todoItem ->
                             if (inserted <= 5) {
-                                todoItem.id = todoItem.id?.plus(1)
                                 todoViewModel.insert(todoItem)
-                                inserted+=1
+                                inserted += 1
                             }
                         }
                     }
