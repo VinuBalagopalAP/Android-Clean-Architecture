@@ -30,9 +30,7 @@ import kotlin.coroutines.coroutineContext
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val todoViewModel: TodoViewModel by viewModels {
-        TodoViewModel.TodoViewModelFactory((application as MyApplication).repository)
-    }
+    private val todoViewModel: TodoViewModel by viewModels()
 
     lateinit var todoDao: TodoDao
 

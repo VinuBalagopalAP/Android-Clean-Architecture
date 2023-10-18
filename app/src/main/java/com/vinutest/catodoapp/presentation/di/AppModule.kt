@@ -1,11 +1,14 @@
 package com.vinutest.catodoapp.presentation.di
 
+import android.content.Context
+import androidx.room.Room
 import com.vinutest.catodoapp.data.datasource.api.APICall
 import com.vinutest.catodoapp.data.datasource.database.TodoDao
 import com.vinutest.catodoapp.data.datasource.database.TodoDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -18,7 +21,15 @@ const val BASE_URL = "https://jsonplaceholder.typicode.com/"
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-
+    @Provides
+    @Singleton
+    fun provideAppDatabase(@ApplicationContext appContext: Context): TodoDatabase {
+        return Room.databaseBuilder(
+            appContext,
+            TodoDatabase::class.java,
+            "todo_table"
+        ).build()
+    }
     @Provides
     @Singleton
     fun provideTodoDao(todoDatabase: TodoDatabase): TodoDao {
