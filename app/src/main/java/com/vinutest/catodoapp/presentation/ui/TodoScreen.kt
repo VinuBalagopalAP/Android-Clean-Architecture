@@ -176,7 +176,10 @@ fun TodoRow(
                         },
                         confirmButton = {
                             TextButton(onClick = {
+                                // Update the TodoItem in Room DB
                                 onEditTitle(todo.copy(title = title))
+
+                                // Dismiss the dialog
                                 updateTitle = false
                             }) {
                                 Text("Update")
