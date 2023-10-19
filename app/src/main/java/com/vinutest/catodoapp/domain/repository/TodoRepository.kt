@@ -7,14 +7,16 @@ import dagger.hilt.android.scopes.ActivityRetainedScoped
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.conflate
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@ActivityRetainedScoped
+//@ActivityRetainedScoped
 class TodoRepository @Inject constructor(private val todoDao: TodoDao){
 
-    @Suppress("RedundantSuspendModifier")
-    @WorkerThread
+//    @Suppress("RedundantSuspendModifier")
+//    @WorkerThread
     suspend fun insert(todoItem: TodoItem){
         CoroutineScope(Dispatchers.IO).launch {
             todoDao.insertTodo(todoItem)
@@ -38,4 +40,5 @@ class TodoRepository @Inject constructor(private val todoDao: TodoDao){
     }
 
     val getAllTodos: Flow<MutableList<TodoItem>> = todoDao.getAllTodos()
+//    = todoDao.getAllTodos().flowOn(Dispatchers.IO).conflate()
 }

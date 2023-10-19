@@ -16,11 +16,11 @@ class MyApplication : Application(){
 //
 //    // Using by lazy so the database and the repository are only created when they're needed
 //    // rather than when the application starts
-//    private val database by lazy {
-//        TodoDatabase.getDatabase(this,applicationScope)
-//    }
-//
-//    val repository by lazy {
-//        TodoRepository(database.todoDao())
-//    }
+    private val database by lazy {
+        TodoDatabase.getDatabase(this,applicationScope)
+    }
+
+    val repository by lazy {
+        TodoRepository(database.todoDao())
+    }
 }
