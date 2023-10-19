@@ -8,5 +8,5 @@ import java.util.UUID
 data class TodoItem(
     @PrimaryKey(autoGenerate = false)
     var id: Int? = null,
-    val title: String?,
+    var title: String?,
 )

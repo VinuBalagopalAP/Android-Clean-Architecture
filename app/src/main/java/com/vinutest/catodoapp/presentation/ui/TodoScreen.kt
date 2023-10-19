@@ -100,11 +100,11 @@ fun TodoScreen(
                     TodoRow(
                         todo = todo,
                         onNoteClicked = {
-                            onRemoveTodo(todo)
+                            onRemoveTodo(it)
                             Toast.makeText(context, "Todo Removed", Toast.LENGTH_SHORT).show()
                         },
                         onEditTitle = {
-                            onUpdateTodo(todo)
+                            onUpdateTodo(it)
                             Toast.makeText(context, "Todo Updated", Toast.LENGTH_SHORT).show()
                         })
                 }
@@ -177,7 +177,8 @@ fun TodoRow(
                         confirmButton = {
                             TextButton(onClick = {
                                 // Update the TodoItem in Room DB
-                                onEditTitle(todo.copy(title = title))
+                                todo.title = title
+                                onEditTitle(todo)
 
                                 // Dismiss the dialog
                                 updateTitle = false
