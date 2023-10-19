@@ -3,6 +3,7 @@
 package com.vinutest.catodoapp
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -24,6 +25,9 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import android.content.SharedPreferences
+import android.util.Log
+
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -44,9 +48,17 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val retrofitResponse = NetworkModule.provideAPICallService()
+                    // Get the shared preference
+                    val sharedPreferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
 
-//                    if(!todoViewModel.allTodoItems.isInitialized ){
+                    // Check if the code has already been run
+                    val codeHasAlreadyRun = sharedPreferences.getBoolean("code_has_already_run", false)
+
+                    // If the code has not already been run, then run it and
+                    // set the shared preference to true
+                    if (!codeHasAlreadyRun) {
+                        val retrofitResponse = NetworkModule.provideAPICallService()
+
                         GlobalScope.launch(Dispatchers.IO) {
                             val result = retrofitResponse.getTodos()
                             val todoItems = result.body()!!
@@ -59,7 +71,11 @@ class MainActivity : ComponentActivity() {
                                 }
                             }
                         }
-//                    }
+
+                        // Set the shared preference to true
+                        sharedPreferences.edit().putBoolean("code_has_already_run", true).apply()
+                        Log.d("codeHasAlreadyRun", "true")
+                    }
                     TodoApp(todoViewModel= todoViewModel)
                 }
             }
