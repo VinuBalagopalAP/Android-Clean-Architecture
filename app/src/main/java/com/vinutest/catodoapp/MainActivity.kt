@@ -25,7 +25,6 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import android.content.SharedPreferences
 import android.util.Log
 
 
@@ -90,6 +89,7 @@ fun TodoApp(todoViewModel: TodoViewModel) {
 
     TodoScreen(
         todo = noteList,
-        onRemoveNote = { todoViewModel.delete(it) },
-        onAddNote = { todoViewModel.insert(it) })
+        onRemoveTodo = { todoViewModel.delete(it) },
+        onAddTodo = { todoViewModel.insert(it)},
+        onUpdateTodo = {todoViewModel.update(it)})
 }

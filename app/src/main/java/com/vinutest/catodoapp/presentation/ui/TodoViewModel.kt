@@ -53,14 +53,14 @@ class TodoViewModel @Inject constructor(private val todoRepository: TodoReposito
         todoRepository.update(todoItem)
     }
 
-    class TodoViewModelFactory(private val todoRepository: TodoRepository)
-        : ViewModelProvider.Factory{
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(TodoViewModel::class.java)){
-                @Suppress("UNCHECKED_CAST")
-                return TodoViewModel(todoRepository) as T
-            }
-            throw IllegalArgumentException("Unknown VieModel Class")
-        }
-        }
+//    class TodoViewModelFactory(private val todoRepository: TodoRepository)
+//        : ViewModelProvider.Factory{
+//        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+//            if (modelClass.isAssignableFrom(TodoViewModel::class.java)){
+//                @Suppress("UNCHECKED_CAST")
+//                return TodoViewModel(todoRepository) as T
+//            }
+//            throw IllegalArgumentException("Unknown VieModel Class")
+//        }
+//        }
 }
